@@ -44,8 +44,8 @@ void TaskPMS_Poll(void *pvParameters)
       sprintf(Topic,"raw/esp-%s/pms",Network.name().c_str());
       Data = "{";
       /* Atmospheric Environment */
-      Data += "\"AE1.0\": "+String(LocalData.PM_AE_UG_1_0);
-      Data += ", \"AE2.5\": "+String(LocalData.PM_AE_UG_2_5);
+      Data += "\"AE1_0\": "+String(LocalData.PM_AE_UG_1_0);
+      Data += ", \"AE2_5\": "+String(LocalData.PM_AE_UG_2_5);
       Data += ", \"AE10\": "+String(LocalData.PM_AE_UG_10_0);
       Data += "}";
       if(MQTT.connected())
