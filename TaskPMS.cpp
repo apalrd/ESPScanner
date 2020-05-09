@@ -36,7 +36,7 @@ void TaskPMS_Poll(void *pvParameters)
     Serial.println("PMS: Requesting read");
     LocalPMS.requestRead();
     /* Wait a bit for the sensor to reply */
-    vTaskDelay(2*configTICK_RATE_HZ);
+    vTaskDelay(5*configTICK_RATE_HZ);
     /* Poll the sensor */
     if(LocalPMS.readUntil(LocalData))
     {
