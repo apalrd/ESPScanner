@@ -5,6 +5,8 @@
 #define __CCS_811_H
 #include "EthManager.h"
 
+#ifdef SENSOR_CCS811
+
 class TaskCCS811
 {
   public:
@@ -25,5 +27,8 @@ class TaskCCS811
 /* Global CCS object */
 extern class TaskCCS811 CCS;
 
+/* SENSOR_CCS811 */
+#endif
 
+/* __CCS_811_H */
 #endif

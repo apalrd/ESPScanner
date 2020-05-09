@@ -5,7 +5,13 @@
 /* MQTT server information */
 #define MQTT_SERVER "telstar.palnet.net"
 #define MQTT_PORT 1883
-#define MQTT_RECONNECT_TIME 100000
+#define MQTT_RECONNECT_TIME 5000
 #define MQTT_PREFIX "raw/"
+
+/* Include CCS811 sensor */
+#define SENSOR_CCS811
+
+/* Include BME680 sensor */
+#define SENSOR_BME680
 
 #endif

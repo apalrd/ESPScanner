@@ -5,12 +5,12 @@
 
 #include "EthManager.h"
 #include "TaskCCS811.h"
+#include "TaskBME680.h"
 #include "Wire.h"
 
-void setup()
+/* Function to enumerate I2C devices */
+void ListI2C()
 {
-  Serial.begin(115200);
-  Wire.begin(13,16);
   for(int address = 1; address < 127; address++ ) {
     Wire.beginTransmission(address);
     int error = Wire.endTransmission();
@@ -28,9 +28,32 @@ void setup()
       }
       Serial.println(address,HEX);
     }    
-  }
+  }  
+}
+
+void setup()
+{
+  /* Start Serial */
+  Serial.begin(115200);
+
+  /* Start Wire using ports for ESP32-POE board */
+  Wire.begin(13,16);
+
+  /* Poll I2C Bus */
+  ListI2C();
+
+  /* Start networking (and MQTT) */
   Network.begin();
+
+#ifdef SENSOR_BME680
+  /* Start BME680 */
+  BME.begin(5.0f);
+#endif
+
+#ifdef SENSOR_CCS811
+  /* Start CCS811 */
   CCS.begin(5.0f);
+#endif
 }
 
 void loop()

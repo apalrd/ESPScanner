@@ -6,10 +6,12 @@
 #include "Adafruit_CCS811.h"
 #include "TaskCCS811.h"
 #include "Wire.h"
+#include "TaskBME680.h"
 
+#ifdef SENSOR_CCS811
 
 /* CCS811 object */
-Adafruit_CCS811 LocalCCS;
+static Adafruit_CCS811 LocalCCS;
 
 /* Global CCS object */
 class TaskCCS811 CCS;
@@ -29,6 +31,13 @@ void TaskCCS811_Poll(void *pvParameters)
     /* Poll the sensor */
     if(LocalCCS.available())
     {
+      /* Update environmental data from BME680 if equiped */
+#ifdef SENSOR_BME680
+      LocalCCS.setEnvironmentalData(
+        BME.getHumid(),
+        BME.getTemp());      
+/* SENSOR_BME680 */
+#endif
       /* Read data */
       if(LocalCCS.readData())
       {
@@ -37,20 +46,15 @@ void TaskCCS811_Poll(void *pvParameters)
       }
       else
       {
-        /* No error returned */
-        Serial.print("CCS811: Read data CO2: ");
-        Serial.print(LocalCCS.geteCO2());
-        Serial.print("ppm, TVOC: ");
-        Serial.print(LocalCCS.getTVOC());
-        Serial.println();
-
         /* Format MQTT response */
         sprintf(Topic,"raw/esp-%s/ccs811",Network.name().c_str());
-        sprintf(Data,"{\"CO2\": %d,\"TVOC\": %d}",LocalCCS.geteCO2(),LocalCCS.getTVOC());
+        sprintf(Data,"{\"CO2\": %d,\"VOC\": %d}",LocalCCS.geteCO2(),LocalCCS.getTVOC());
         if(MQTT.connected())
         {
-          MQTT.publish(Topic,Data);
+          MQTT.publish(Topic,Data,true);
         }
+        Serial.print("CCS811: ");
+        Serial.println(Data);
       }
     }
 
@@ -83,7 +87,7 @@ void TaskCCS811::begin(void)
     xTaskCreatePinnedToCore(
       TaskCCS811_Poll,
       "TaskCCS811",
-      1024,
+      4096,
       NULL,
       2,
       NULL,
@@ -95,3 +99,6 @@ void TaskCCS811::begin(void)
     Serial.println("CCS811: Failed to start sensor!");
   }
 }
+
+/* SENSOR_CCS811 */
+#endif 
