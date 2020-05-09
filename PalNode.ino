@@ -1,11 +1,14 @@
 /* Main source code file for PalNode
  * This acts as a configuration file,
  * The actual code is in cpp files.
+ * The following libraries are required to be installed via the library manager:
+ * 
  */
 
 #include "EthManager.h"
 #include "TaskCCS811.h"
 #include "TaskBME680.h"
+#include "TaskPMS.h"
 #include "Wire.h"
 
 /* Function to enumerate I2C devices */
@@ -53,6 +56,11 @@ void setup()
 #ifdef SENSOR_CCS811
   /* Start CCS811 */
   CCS.begin(5.0f);
+#endif
+
+#ifdef SENSOR_PMS
+  /* Start PMS @ 2 minute interval */
+  PMS.begin(2*60.0f);
 #endif
 }
 

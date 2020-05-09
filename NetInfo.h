@@ -14,4 +14,7 @@
 /* Include BME680 sensor */
 #define SENSOR_BME680
 
+/* Include Plantower PMS sensors */
+#define SENSOR_PMS
+
 #endif
