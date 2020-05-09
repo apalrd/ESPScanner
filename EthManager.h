@@ -4,6 +4,17 @@
 #ifndef __ETH_MANAGER_H
 #define __ETH_MANAGER_H
 #include <ETH.h>
+#include <PubSubClient.h>
+#include "NetInfo.h"
+
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
+#endif
+
+/* Global MQTT instance */
+extern PubSubClient MQTT;
 
 /* Callback function (Not a class member */
 void EthManagerCallback(WiFiEvent_t event);
@@ -16,6 +27,9 @@ class EthManager
 
   /* Begin function */
   void begin(void);
+
+  /* Loop function */
+  void loop(void);
 
   /* Get connection status */
   bool connected(void);
