@@ -9,12 +9,15 @@
 #define MQTT_PREFIX "raw/"
 
 /* Include CCS811 sensor */
-#define SENSOR_CCS811
+//#define SENSOR_CCS811
 
 /* Include BME680 sensor */
-#define SENSOR_BME680
+//#define SENSOR_BME680
 
 /* Include Plantower PMS sensors */
-#define SENSOR_PMS
+//#define SENSOR_PMS
+
+/* Include BLE scanner support */
+#define SENSOR_BLE
 
 #endif

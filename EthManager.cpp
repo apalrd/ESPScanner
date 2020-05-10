@@ -19,7 +19,7 @@ void EthManagerCallback(WiFiEvent_t event)
 {
   const char *CMAC;
   char NMAC[18];
-  String hName;
+  static String hName;
   switch (event) {
     case SYSTEM_EVENT_ETH_START:
       Serial.print("ETH: Started.. ");
@@ -37,7 +37,7 @@ void EthManagerCallback(WiFiEvent_t event)
               tolower(CMAC[15]),tolower(CMAC[16]));
       Network.m_Name = NMAC;
       hName = "esp-"+Network.m_Name;
-      Serial.print(" Hostname: ");
+      Serial.print("ETH: Hostname ");
       Serial.println(hName);
       //set eth hostname here
       ETH.setHostname(hName.c_str());

@@ -9,6 +9,7 @@
 #include "TaskCCS811.h"
 #include "TaskBME680.h"
 #include "TaskPMS.h"
+#include "TaskBLE.h"
 #include "Wire.h"
 
 /* Function to enumerate I2C devices */
@@ -61,6 +62,11 @@ void setup()
 #ifdef SENSOR_PMS
   /* Start PMS @ 2 minute interval */
   PMS.begin(2*60.0f);
+#endif
+
+#ifdef SENSOR_BLE
+  /* Start BLE scanner @ 5sec scan on 20s interval, passive */
+  BLE.begin(20,5,false);
 #endif
 }
 

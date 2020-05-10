@@ -5,7 +5,7 @@
 #define __ETH_MANAGER_H
 #include <ETH.h>
 #include <PubSubClient.h>
-#include "NetInfo.h"
+#include "Configuration.h"
 
 #if CONFIG_FREERTOS_UNICORE
 #define ARDUINO_RUNNING_CORE 0

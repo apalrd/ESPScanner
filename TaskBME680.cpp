@@ -91,7 +91,7 @@ void TaskBME680_Poll(void *pvParameters)
       output += "}";
       Serial.print("BME680: ");
       Serial.println(output);
-      if(MQTT.connected())
+      if(MQTT.connected() && (LocalBsec.status == BSEC_OK) && (LocalBsec.bme680Status == BME680_OK))
       {
         MQTT.publish_P(Topic,output.c_str(),true);
       }
@@ -183,7 +183,7 @@ void TaskBME680::begin(void)
     xTaskCreatePinnedToCore(
       TaskBME680_Poll,
       "TaskBME680",
-      4096,
+      8192,
       NULL,
       2,
       &xTaskPoll,
@@ -192,7 +192,7 @@ void TaskBME680::begin(void)
     xTaskCreatePinnedToCore(
       TaskBME680_Bgnd,
       "TaskBME680Bgnd",
-      4096,
+      8192,
       NULL,
       0,
       &xTaskBgnd,
