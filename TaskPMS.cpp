@@ -34,10 +34,15 @@ void TaskPMS_Poll(void *pvParameters)
 
     /* Send read request */
     Serial.println("PMS: Requesting read");
+    Serial1.flush();
     LocalPMS.requestRead();
     /* Wait a bit for the sensor to reply */
-    vTaskDelay(5*configTICK_RATE_HZ);
+    vTaskDelay(3*configTICK_RATE_HZ);
     /* Poll the sensor */
+    LocalPMS.readUntil(LocalData);
+    /* Request another read, wait, poll again */
+    LocalPMS.requestRead();
+    vTaskDelay(3*configTICK_RATE_HZ);
     if(LocalPMS.readUntil(LocalData))
     {
       /* Format MQTT response */
@@ -50,7 +55,9 @@ void TaskPMS_Poll(void *pvParameters)
       Data += "}";
       if(MQTT.connected())
       {
+        Network.lock();
         MQTT.publish_P(Topic,Data.c_str(),true);
+        Network.unlock();
       }
       Serial.print("PMS: ");
       Serial.println(Data);
@@ -86,7 +93,7 @@ void TaskPMS::begin(float readInterval)
 void TaskPMS::begin(void)
 {
   /* Start Serial1 */
-  Serial1.begin(9600,SERIAL_8N1,36,34);
+  Serial1.begin(9600,SERIAL_8N1,SENSOR_PMS_RX,SENSOR_PMS_TX);
 
   /* Wait 2 seconds for data */
   delay(2000);

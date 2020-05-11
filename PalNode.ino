@@ -51,22 +51,22 @@ void setup()
 
 #ifdef SENSOR_BME680
   /* Start BME680 */
-  BME.begin(5.0f);
+  BME.begin(SENSOR_BME680_POLL_RATE);
 #endif
 
 #ifdef SENSOR_CCS811
   /* Start CCS811 */
-  CCS.begin(5.0f);
+  CCS.begin(SENSOR_CCS811_POLL_RATE);
 #endif
 
 #ifdef SENSOR_PMS
-  /* Start PMS @ 2 minute interval */
-  PMS.begin(2*60.0f);
+  /* Start PMS */
+  PMS.begin(SENSOR_PMS_POLL_RATE);
 #endif
 
 #ifdef SENSOR_BLE
   /* Start BLE scanner @ 5sec scan on 20s interval, passive */
-  BLE.begin(20,5,false);
+  BLE.begin(SENSOR_BLE_POLL_RATE,SENSOR_BLE_SCAN_LENGTH,SENSOR_BLE_SCAN_ACTIVE);
 #endif
 }
 

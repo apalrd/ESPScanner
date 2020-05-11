@@ -6,6 +6,7 @@
 #include <ETH.h>
 #include <PubSubClient.h>
 #include "Configuration.h"
+#include <rom/rtc.h>
 
 #if CONFIG_FREERTOS_UNICORE
 #define ARDUINO_RUNNING_CORE 0
@@ -37,6 +38,10 @@ class EthManager
   /* Get local name string */
   String name(void);
 
+  /* Lock and Unlock the EthManager mutex */
+  void lock(void);
+  void unlock(void);
+
   protected:
   friend void EthManagerCallback(WiFiEvent_t event);
   /* Cached name string */
@@ -44,6 +49,11 @@ class EthManager
 
   /* Connected status */
   bool m_Connected;
+
+  /* Networking mutex */
+  SemaphoreHandle_t m_EthLock;
+
+  String ResetReason(RESET_REASON reason);
 };
 
 

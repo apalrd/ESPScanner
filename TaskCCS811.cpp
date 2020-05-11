@@ -51,7 +51,9 @@ void TaskCCS811_Poll(void *pvParameters)
         sprintf(Data,"{\"CO2\": %d,\"VOC\": %d}",LocalCCS.geteCO2(),LocalCCS.getTVOC());
         if(MQTT.connected())
         {
+          Network.lock();
           MQTT.publish(Topic,Data,true);
+          Network.unlock();
         }
         Serial.print("CCS811: ");
         Serial.println(Data);

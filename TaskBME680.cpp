@@ -64,6 +64,7 @@ void TaskBME680_Poll(void *pvParameters)
   static int32_t LastSaveTime;
   static bool HasSaved = false;
   bool SaveNow = false;
+  TickType_t xLastWakeTime = xTaskGetTickCount();
 
   /* Loop forever */
   do
@@ -93,7 +94,9 @@ void TaskBME680_Poll(void *pvParameters)
       Serial.println(output);
       if(MQTT.connected() && (LocalBsec.status == BSEC_OK) && (LocalBsec.bme680Status == BME680_OK))
       {
+        Network.lock();
         MQTT.publish_P(Topic,output.c_str(),true);
+        Network.unlock();
       }
 
       /* Save because Accuracy changed and we haven't saved yet */
@@ -112,8 +115,8 @@ void TaskBME680_Poll(void *pvParameters)
       BME.status();
     }
 
-    /* Delay a little bit */
-    vTaskDelay(100);
+    /* Slow down processing */
+    vTaskDelayUntil(&xLastWakeTime,(BME.m_readInterval * configTICK_RATE_HZ));
   } while(1);
 
 }
