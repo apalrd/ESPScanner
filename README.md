@@ -4,6 +4,6 @@ Each sensor node can be configured to include any number of supported sensors, a
 
 ## Supported sensors
 * Bosch BME680 environmental sensor, including Bosch library functions
-* CCS211 environmental sensor
+* CCS811 environmental sensor
 * Plantower PMS5003/PMS7003 particulate matter sensor
 * Bluetooth Low Energy (BLE) scanner to capture devices around the device (Requires ESP32-POE to be connected via wired Ethernet)
